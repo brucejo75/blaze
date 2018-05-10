@@ -1,3 +1,14 @@
+TemplatingTools.generateDynTemplateJS =
+function generateTemplateJS(name, renderFuncCode) {
+  let dynName = 'app_' + name;
+  const nameLiteral = JSON.stringify(dynName);
+  const templateDotNameLiteral = JSON.stringify(`Template.${dynName}`);
+
+  return `
+Template[${nameLiteral}] = new Template(${templateDotNameLiteral}, ${renderFuncCode});
+`;
+}
+
 TemplatingTools.generateTemplateJS =
 function generateTemplateJS(name, renderFuncCode) {
   const nameLiteral = JSON.stringify(name);

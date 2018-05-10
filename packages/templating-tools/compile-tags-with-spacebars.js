@@ -1,8 +1,8 @@
-TemplatingTools.compileTagsWithSpacebars = function compileTagsWithSpacebars(tags) {
+TemplatingTools.compileTagsWithSpacebars = function compileTagsWithSpacebars(tags, dynamic = false) {
   var handler = new SpacebarsTagCompiler();
 
   tags.forEach((tag) => {
-    handler.addTagToResults(tag);
+    handler.addTagToResults(tag, dynamic);
   });
 
   return handler.getResults();
@@ -14,7 +14,8 @@ class SpacebarsTagCompiler {
       head: '',
       body: '',
       js: '',
-      bodyAttrs: {}
+      bodyAttrs: {},
+      names: []
     };
   }
 
@@ -22,7 +23,7 @@ class SpacebarsTagCompiler {
     return this.results;
   }
 
-  addTagToResults(tag) {
+  addTagToResults(tag, dynamic = false) {
     this.tag = tag;
 
     // do we have 1 or more attributes?
@@ -57,8 +58,10 @@ class SpacebarsTagCompiler {
           sourceName: `Template "${name}"`
         });
 
-        this.results.js += TemplatingTools.generateTemplateJS(
-          name, renderFuncCode);
+        this.results.names.push(name);
+        this.results.js += dynamic ?
+        TemplatingTools.generateDynTemplateJS(name, renderFuncCode) :
+        TemplatingTools.generateTemplateJS(name, renderFuncCode);
       } else if (this.tag.tagName === "body") {
         this.addBodyAttrs(this.tag.attribs);
 
