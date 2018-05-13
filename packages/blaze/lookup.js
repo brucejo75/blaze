@@ -199,8 +199,10 @@ Blaze.View.prototype.lookup = function (name, _options) {
         // a missing directive.
         throw new Error("Unsupported directive: " + name);
       }
+      let template = Blaze.currentView._findThisTemplate();
+      if(template.tpl) x = template.getVAR(name);
     }
-    if (! data) {
+    if (! data && !x) {
       return null;
     }
     if (typeof x !== 'function') {
