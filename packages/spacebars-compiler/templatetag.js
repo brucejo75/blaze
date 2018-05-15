@@ -321,9 +321,12 @@ TemplateTag.parse = function (scannerOrString) {
   } else if (type === 'INCLUSION') {
     // error on invalid template name
     tag = scanExpr(type);
-    if(tag.path.length !== 1) expected('template name');
-    // All MERIS dynamic templates get prepended
-    tag.path[0] = `app_${tag.path[0]}`;
+    // MERIS dynamic templates can use Template.dynamic
+    if(tag.path[0] !== 'Template') {
+     if(tag.path.length !== 1)expected('template name');
+      // All MERIS dynamic templates get prepended
+      tag.path[0] = `app_${tag.path[0]}`;
+    }
   }
   else {
     // DOUBLE, TRIPLE, BLOCKOPEN
