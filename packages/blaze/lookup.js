@@ -184,7 +184,19 @@ Blaze.View.prototype.lookup = function (name, _options) {
     var isCalledAsFunction = (arguments.length > 0);
     var data = Blaze.getData();
     var x = data && data[name];
-    if (! x) {
+    var dataHasName = data && data.hasOwnProperty(name);
+    if (!dataHasName) {
+      let template = Blaze.currentView._findThisTemplate();
+      if(template && template.tpl) {
+        let VAR = template.getVAR(name);
+        if(VAR.defined) {
+          dataHasName = true;
+          x = VAR.value;
+        }
+      }
+    }
+
+    if(!dataHasName) {
       if (lookupTemplate) {
         throw new Error("No such template: " + name);
       } else if (isCalledAsFunction) {
@@ -199,12 +211,6 @@ Blaze.View.prototype.lookup = function (name, _options) {
         // a missing directive.
         throw new Error("Unsupported directive: " + name);
       }
-      let template = Blaze.currentView._findThisTemplate();
-      if(template && template.tpl) {
-        x = template.getVAR(name);
-      }    
-    }
-    if (! data && !x) {
       return null;
     }
     if (typeof x !== 'function') {
