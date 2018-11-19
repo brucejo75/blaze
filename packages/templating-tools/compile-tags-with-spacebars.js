@@ -49,6 +49,10 @@ class SpacebarsTagCompiler {
           this.throwCompileError("Template has no 'name' attribute");
         }
 
+        if (dynamic && name[0] === '$') {
+          this.throwCompileError("Template names beginning with '$' are reserved for system templates");
+        }
+
         if (SpacebarsCompiler.isReservedName(name)) {
           this.throwCompileError(`Template can't be named "${name}"`);
         }
