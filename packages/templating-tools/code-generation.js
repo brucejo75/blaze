@@ -1,9 +1,9 @@
-export function generateDynTemplateJS(name, renderFuncCode) {
+export function generateDynTemplateJS(name, renderFuncCode, useHMR) {
   let dynName = name !== 'Template' ? 'app_' + name : name;
   return generateTemplateJS(dynName, renderFuncCode, useHMR);
 }
 
-export function generateTemplateJS(name, renderFuncCode) {
+export function generateTemplateJS(name, renderFuncCode, useHMR) {
   const nameLiteral = JSON.stringify(name);
   const templateDotNameLiteral = JSON.stringify(`Template.${name}`);
 

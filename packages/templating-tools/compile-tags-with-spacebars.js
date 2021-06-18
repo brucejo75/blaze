@@ -71,8 +71,8 @@ class SpacebarsTagCompiler {
 
         this.results.names.push(name);
         this.results.js += dynamic ?
-        generateDynTemplateJS(name, renderFuncCode) :
-        generateTemplateJS(name, renderFuncCode);
+        generateDynTemplateJS(name, renderFuncCode, hmrAvailable) :
+        generateTemplateJS(name, renderFuncCode, hmrAvailable);
       } else if (this.tag.tagName === "body") {
         const { whitespace = '', ...attribs } = this.tag.attribs;
         this.addBodyAttrs(attribs);
